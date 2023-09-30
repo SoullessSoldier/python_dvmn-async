@@ -22,7 +22,10 @@ def draw(canvas):
     row, column = (3, 10)
     curses.curs_set(False)
     canvas.border(0, 0, 0, 0, 0, 0, 0, 0)
-    coroutine = blink(canvas, row, column)
+    coroutines = []
+    for i in range(5):
+        coroutine = blink(canvas, row, column+i)
+        coroutines.append(coroutine)
     # print('type', type(coroutine))
     # print('dir', dir(coroutine))
     # time.sleep(5)
@@ -39,16 +42,13 @@ def draw(canvas):
         # canvas.addstr(row, column, '*')
         # canvas.refresh()
         # time.sleep(0.3)
-        try:
-            coroutine.send(None)
-            canvas.refresh()
-            time.sleep(1)
-        except StopIteration:
-            print('stop iteration')
-    # break
-
-
-    # time.sleep(5)
+        for coroutine in coroutines:
+            try:
+                coroutine.send(None)
+            except StopIteration:
+                print('stop iteration')
+        canvas.refresh()
+        time.sleep(1)
 
 
 if __name__ == '__main__':
