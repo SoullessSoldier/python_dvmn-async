@@ -2,20 +2,28 @@ import curses
 import time
 import asyncio
 
+TIC_TIMEOUT = 0.1
+
+
+async def go_to_sleep(seconds):
+    iteration_count = int(seconds * 10)
+    for _ in range(iteration_count):
+        await asyncio.sleep(0)
+
 
 async def blink(canvas, row, column, symbol='*'):
     while True:
         canvas.addstr(row, column, symbol, curses.A_DIM)
-        await asyncio.sleep(0)
+        await go_to_sleep(2)
 
         canvas.addstr(row, column, symbol)
-        await asyncio.sleep(0)
+        await go_to_sleep(0.3)
 
         canvas.addstr(row, column, symbol, curses.A_BOLD)
-        await asyncio.sleep(0)
+        await go_to_sleep(0.5)
 
         canvas.addstr(row, column, symbol)
-        await asyncio.sleep(0)
+        await go_to_sleep(0.3)
 
 
 def draw(canvas):
@@ -48,7 +56,7 @@ def draw(canvas):
             except StopIteration:
                 print('stop iteration')
         canvas.refresh()
-        time.sleep(1)
+        time.sleep(TIC_TIMEOUT)
 
 
 if __name__ == '__main__':
