@@ -3,14 +3,22 @@ import time
 
 
 def draw(canvas):
-    row, column = (5, 20)
-    canvas.addstr(row, column, 'Hello, world!', curses.A_REVERSE | curses.A_BOLD)
+    row, column = (3, 10)
     curses.curs_set(False)
-    canvas.attron(curses.A_BOLD)
-    canvas.border('L','R','T','B','*','*','*','*')
-    canvas.attron(curses.A_NORMAL)
-    canvas.refresh()
-    time.sleep(10)
+    canvas.border(0, 0, 0, 0, 0, 0, 0, 0)
+    while True:
+        canvas.addstr(row, column, '*', curses.A_DIM)
+        canvas.refresh()
+        time.sleep(2)
+        canvas.addstr(row, column, '*')
+        canvas.refresh()
+        time.sleep(0.3)
+        canvas.addstr(row, column, '*', curses.A_BOLD)
+        canvas.refresh()
+        time.sleep(0.5)
+        canvas.addstr(row, column, '*')
+        canvas.refresh()
+        time.sleep(0.3)
 
 
 if __name__ == '__main__':
