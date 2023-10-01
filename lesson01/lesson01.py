@@ -12,19 +12,27 @@ async def go_to_sleep(seconds):
         await asyncio.sleep(0)
 
 
-async def blink(canvas, row, column, symbol='*'):
+async def blink(canvas, row, column, symbol='*', delay=0):
     while True:
-        canvas.addstr(row, column, symbol, curses.A_DIM)
-        await go_to_sleep(2)
+        if delay == 0:
+            canvas.addstr(row, column, symbol, curses.A_DIM)
+            await go_to_sleep(2)
+            delay += 1
 
-        canvas.addstr(row, column, symbol)
-        await go_to_sleep(0.3)
+        if delay == 1:
+            canvas.addstr(row, column, symbol)
+            await go_to_sleep(0.3)
+            delay += 1
 
-        canvas.addstr(row, column, symbol, curses.A_BOLD)
-        await go_to_sleep(0.5)
+        if delay == 2:
+            canvas.addstr(row, column, symbol, curses.A_BOLD)
+            await go_to_sleep(0.5)
+            delay += 1
 
-        canvas.addstr(row, column, symbol)
-        await go_to_sleep(0.3)
+        if delay == 3:
+            canvas.addstr(row, column, symbol)
+            await go_to_sleep(0.3)
+            delay = 0
 
 
 def draw(canvas):
@@ -34,9 +42,10 @@ def draw(canvas):
     coroutines = []
     stars = '+*.:'
     for i in range(100):
-        row = random.randint(2, max_y-2)
-        column = random.randint(2, max_x-2)
-        coroutine = blink(canvas, row, column, random.choice(stars))
+        row = random.randint(1, max_y-2)
+        column = random.randint(1, max_x-2)
+        delay = random.randint(0, 3)
+        coroutine = blink(canvas, row, column, random.choice(stars), delay)
         coroutines.append(coroutine)
     # print('type', type(coroutine))
     # print('dir', dir(coroutine))
